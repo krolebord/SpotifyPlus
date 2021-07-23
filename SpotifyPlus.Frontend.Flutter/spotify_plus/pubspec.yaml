@@ -1,0 +1,39 @@
+name: spotify_plus
+description: A new Flutter project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.13.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  json_annotation: ^4.1.0
+
+  shared_preferences: ^2.0.6
+  http: ^0.13.3
+  logger: ^1.0.0
+
+  equatable: ^2.0.3
+
+  provider: ^5.0.0
+  flutter_bloc: ^7.0.1
+  get_it: ^7.2.0
+
+  vrouter: ^1.2.0+5
+
+  url_launcher: ^6.0.9
+  spotify: ^0.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  build_runner: ^2.0.6
+  json_serializable: any
+  flutter_lints: ^1.0.4
+
+flutter:
+  uses-material-design: true
