@@ -1,8 +1,8 @@
 class ApiUrls {
   ApiUrls._();
 
-  static const String scheme = "https";
-  static const String authority = "localhost:5001";
+  static const String scheme = "http";
+  static const String authority = "localhost:5000";
 
   static const String apiPath = "$scheme://$authority";
 

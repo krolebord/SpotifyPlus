@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_urls_object.dart';
+part of 'auth_session.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -9,14 +9,14 @@ part of 'auth_urls_object.dart';
 AuthUrlsObject _$AuthUrlsObjectFromJson(Map<String, dynamic> json) {
   return AuthUrlsObject(
     authUrl: json['authUrl'] as String,
-    tokenUrl: json['tokenUrl'] as String,
     authKey: json['authKey'] as String,
+    expiresAt: DateTime.parse(json['expiresAt'] as String),
   );
 }
 
 Map<String, dynamic> _$AuthUrlsObjectToJson(AuthUrlsObject instance) =>
     <String, dynamic>{
       'authUrl': instance.authUrl,
-      'tokenUrl': instance.tokenUrl,
       'authKey': instance.authKey,
+      'expiresAt': instance.expiresAt.toIso8601String(),
     };

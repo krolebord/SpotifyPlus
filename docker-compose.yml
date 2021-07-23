@@ -1,0 +1,24 @@
+﻿version: '3.8'
+
+services:
+  spotify-plus-api:
+    image: spotify-plus-api:latest
+    build:
+      context: SpotifyPlus.Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - SpotifyOptions__ClientId=c384c93b3bfe4fdc95e1438c4b5005d6
+      - SpotifyOptions__ClientSecret=SET_CLIENT_SECRET_HERE
+      - SpotifyOptions__RedirectUrl=http://localhost:5000/auth/callback
+      - SpotifyOptions__SessionDuration=555
+
+  spotify-plus-webapp:
+    image: spotify-plus-flutter
+    build:
+      context: SpotifyPlus.Frontend.Flutter/spotify_plus
+      dockerfile: Dockerfile
+    ports:
+      - "5050:80"
+

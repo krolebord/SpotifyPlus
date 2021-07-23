@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -13,24 +14,17 @@ namespace SpotifyPlus
     public class Startup
     {
         private readonly IWebHostEnvironment _environment;
-        private IConfiguration _configuration;
 
-        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment)
         {
             _environment = environment;
-            _configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            _configuration = new ConfigurationBuilder()
-                .AddConfiguration(_configuration)
-                .AddJsonFile("appsecrets.json")
-                .Build();
-
-            services.AddSingleton(_configuration);
-
             services.AddOptions<SpotifyOptions>().BindConfiguration(SpotifyOptions.Key);
+
+            services.AddSingleton<ISpotifyOptionsValidator, SpotifyOptionsValidator>();
 
             services.AddSingleton<ISpotifyAuthManager, SpotifyAuthManager>();
 
@@ -49,8 +43,10 @@ namespace SpotifyPlus
             });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ISpotifyOptionsValidator optionsValidator)
         {
+            optionsValidator.LogValidation();
+
             if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:spotify_plus/api_urls.dart';
 import 'package:spotify_plus/helpers/formatted_api_error_message.dart';
 import 'package:spotify_plus/models/auth/auth_data.dart';
-import 'package:spotify_plus/models/auth/auth_urls_object.dart';
+import 'package:spotify_plus/models/auth/auth_session.dart';
 import 'package:spotify_plus/services/auth/auth_service.dart';
 import 'package:spotify_plus/services/auth/auth_service_error.dart';
 import 'package:spotify_plus/services/auth/auth_service_exception.dart';
