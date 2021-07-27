@@ -1,1 +1,0 @@
-class AuthServiceError extends Error {}

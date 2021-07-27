@@ -6,4 +6,8 @@ abstract class AuthService {
   Stream<AuthData?> get authChanges;
 
   Future<AuthData?> signInWithSpotify();
+
+  Future<AuthData> refreshAuth();
+
+  Future<void> signOut();
 }

@@ -1,7 +1,8 @@
 String formattedErrorMessage({
-  String? reason,
-  String? method,
+  required String reason,
+  required String method,
   String? endpoint
 }) {
   return "Couldn't request api\nReason: $reason\nFailed method: $method\nEndpoint: $endpoint";
 }
+

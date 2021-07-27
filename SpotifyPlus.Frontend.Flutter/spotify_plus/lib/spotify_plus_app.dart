@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_plus/cubit/auth/auth_cubit.dart';
+import 'package:spotify_plus/extensions/size_extension.dart';
 import 'package:vrouter/vrouter.dart';
-
 import 'app_routes.dart';
 import 'app_theme.dart';
 import 'widgets/app_scaffold.dart';
@@ -15,27 +15,32 @@ class SpotifyPlusApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return VRouter(
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      theme: appTheme,
-      title: appTitle,
-      color: Colors.green,
-      initialUrl: AppRoutes.home,
-      routes: [
-        VNester(
-          path: null,
-          widgetBuilder: _buildAppRoot,
-          nestedRoutes: [
-            _buildNotFoundRoute(),
-            ...AppRoutes.build(),
-            VRouteRedirector(
-              path: ':_(.+)',
-              redirectTo: "/404"
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        SizingData.setConstraints(constraints);
+        return VRouter(
+          debugShowCheckedModeBanner: false,
+          themeMode: ThemeMode.dark,
+          theme: appTheme,
+          title: appTitle,
+          color: Colors.green,
+          initialUrl: AppRoutes.home,
+          routes: [
+            VNester(
+              path: null,
+              widgetBuilder: _buildAppRoot,
+              nestedRoutes: [
+                _buildNotFoundRoute(),
+                ...AppRoutes.build(),
+                VRouteRedirector(
+                  path: ':_(.+)',
+                  redirectTo: "/404"
+                )
+              ]
             )
-          ]
-        )
-      ],
+          ],
+        );
+      }
     );
   }
 

@@ -9,13 +9,12 @@ import 'package:spotify_plus/services/auth/auth_service_exception.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthService _authService;
+  late final AuthService _authService;
 
   AuthCubit() :
     _authService = GetIt.instance.get<AuthService>(),
-    super(AuthInitial())
+    super(AuthLoading())
   {
-    emit(AuthSignedOut());
     _authService.authChanges.listen(_onAuthChanged);
   }
 
