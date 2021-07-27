@@ -1,22 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SpotifyPlus.Models.Spotify
 {
     public class AuthData
     {
-        [JsonPropertyName("access_token")]
-        public string AccessToken { get; set; } = string.Empty;
+        public string AccessToken { get; init; } = string.Empty;
 
-        [JsonPropertyName("token_type")]
-        public string TokenType { get; set; } = string.Empty;
+        public string RefreshToken { get; init; } = string.Empty;
 
-        [JsonPropertyName("scope")]
-        public string Scope { get; set; } = string.Empty;
+        public List<string> Scopes { get; init; } = new();
 
-        [JsonPropertyName("expires_in")]
-        public int ExpiresIn { get; set; }
-
-        [JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; } = string.Empty;
+        public DateTimeOffset ExpiresAt { get; init; }
     }
 }

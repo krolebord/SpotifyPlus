@@ -2,7 +2,7 @@
 
 services:
   spotify-plus-api:
-    image: spotify-plus-api:latest
+    image: krolebord/spotify-plus-api:latest
     build:
       context: SpotifyPlus.Backend
       dockerfile: Dockerfile
@@ -15,7 +15,7 @@ services:
       - SpotifyOptions__SessionDuration=555
 
   spotify-plus-webapp:
-    image: spotify-plus-flutter
+    image: krolebord/spotify-plus-flutter:latest
     build:
       context: SpotifyPlus.Frontend.Flutter/spotify_plus
       dockerfile: Dockerfile

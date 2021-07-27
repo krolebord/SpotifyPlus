@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using SpotifyPlus.Filters;
 using SpotifyPlus.Options;
 using SpotifyPlus.Services;
 
@@ -27,6 +28,8 @@ namespace SpotifyPlus
             services.AddSingleton<ISpotifyOptionsValidator, SpotifyOptionsValidator>();
 
             services.AddSingleton<ISpotifyAuthManager, SpotifyAuthManager>();
+
+            services.AddScoped<LogRequestsFilter>();
 
             services.AddCors();
 
@@ -54,12 +57,12 @@ namespace SpotifyPlus
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SpotifyPlus v1"));
             }
 
-            app.UseHttpsRedirection();
-
             app.UseCors(policyBuilder => policyBuilder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

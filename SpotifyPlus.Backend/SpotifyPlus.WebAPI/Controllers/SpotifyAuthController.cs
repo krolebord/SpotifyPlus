@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SpotifyPlus.Filters;
 using SpotifyPlus.Models.Spotify;
 using SpotifyPlus.Services;
 
@@ -7,6 +9,7 @@ namespace SpotifyPlus.Controllers
 {
     [ApiController]
     [Route("auth")]
+    [ServiceFilter(typeof(LogRequestsFilter))]
     public class SpotifyAuthController : ControllerBase
     {
         private readonly ISpotifyAuthManager _authManager;
@@ -44,7 +47,22 @@ namespace SpotifyPlus.Controllers
             if (string.IsNullOrWhiteSpace(authKey))
                 return NotFound();
 
-            var result = await _authManager.GetAuthData(authKey);
+            var result = await _authManager.GetAuthDataFromAuthKey(authKey);
+
+            return result.Match<ActionResult>(
+                authData => Ok(authData),
+                error => BadRequest(error.Message)
+            );
+        }
+
+        [HttpGet("refresh")]
+        public async Task<ActionResult<AuthData>> RefreshAuthData([FromQuery] string refreshToken)
+        {
+            if (string.IsNullOrWhiteSpace(refreshToken))
+                return BadRequest();
+
+
+            var result = await _authManager.GetAuthDataFromRefreshToken(refreshToken);
 
             return result.Match<ActionResult>(
                 authData => Ok(authData),
