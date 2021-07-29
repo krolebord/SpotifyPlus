@@ -13,6 +13,8 @@ namespace SpotifyPlus.Services
 
         public Task<OneOf<Success, AuthManagerError>> HandleAuthCallback(string code, string authKey);
 
+        public OneOf<Success, AuthManagerError> HandleAuthCallbackError(string error, string authKey);
+
         public Task<OneOf<AuthData, AuthManagerError>> GetAuthDataFromAuthKey(string authKey);
 
         public Task<OneOf<AuthData, AuthManagerError>> GetAuthDataFromRefreshToken(string refreshToken);

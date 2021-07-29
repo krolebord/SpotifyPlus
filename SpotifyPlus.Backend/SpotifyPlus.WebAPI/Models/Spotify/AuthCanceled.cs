@@ -1,4 +1,4 @@
 ﻿namespace SpotifyPlus.Models.Spotify
 {
-    public struct AuthTimeout { }
+    public struct AuthCanceled { }
 }

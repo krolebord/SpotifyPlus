@@ -19,7 +19,7 @@ class AuthView extends StatelessWidget {
   void _listenAuth(BuildContext context, AuthState state) {
     if(state is AuthError) {
       ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(state.errorMessage)));
+        .showSnackBar(const SnackBar(content: Text("Couldn't authenticate")));
     }
   }
 

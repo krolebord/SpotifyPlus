@@ -32,7 +32,7 @@ namespace SpotifyPlus.Services
 
         private readonly SpotifyOptions _spotifyOptions;
 
-        private readonly ConcurrentDictionary<string, TaskCompletionSource<OneOf<AuthData, AuthTimeout>>> _authSessions = new();
+        private readonly ConcurrentDictionary<string, TaskCompletionSource<OneOf<AuthData, AuthTimeout, AuthCanceled>>> _authSessions = new();
 
         public SpotifyAuthManager(IOptions<SpotifyOptions> spotifyOptions)
         {
@@ -42,7 +42,7 @@ namespace SpotifyPlus.Services
         public OneOf<AuthSession, AuthManagerError> StartAuthSession()
         {
             string authKey = Guid.NewGuid().ToString();
-            TaskCompletionSource<OneOf<AuthData, AuthTimeout>> task = new();
+            TaskCompletionSource<OneOf<AuthData, AuthTimeout, AuthCanceled>> task = new();
 
             if (!_authSessions.TryAdd(authKey, task))
                 return new AuthManagerError("Couldn't start auth session");
@@ -58,7 +58,7 @@ namespace SpotifyPlus.Services
                 {"client_id", _spotifyOptions.ClientId},
                 {"scope", string.Join(' ', AuthScopes) },
                 {"redirect_uri", _spotifyOptions.RedirectUrl},
-                {"show_dialog", "false"},
+                {"show_dialog", "true"},
                 {"state", authKey}
             };
 
@@ -98,6 +98,17 @@ namespace SpotifyPlus.Services
             );
         }
 
+        public OneOf<Success, AuthManagerError> HandleAuthCallbackError(string error, string authKey)
+        {
+            if (!ValidateKey(authKey))
+                return new AuthManagerError("Auth session key is invalid");
+
+            var authTask = _authSessions[authKey];
+            authTask.SetResult(new AuthCanceled());
+
+            return new Success();
+        }
+
         public async Task<OneOf<AuthData, AuthManagerError>> GetAuthDataFromAuthKey(string authKey)
         {
             if(!ValidateKey(authKey))
@@ -107,7 +118,8 @@ namespace SpotifyPlus.Services
 
             return sessionResult.Match<OneOf<AuthData, AuthManagerError>>(
                 authData => authData,
-                timeout => new AuthManagerError("Auth session expired")
+                timeout => new AuthManagerError("Auth session expired"),
+                error => new AuthManagerError("Auth session canceled")
             );
         }
 

@@ -31,14 +31,27 @@ namespace SpotifyPlus.Controllers
         }
 
         [HttpGet("callback")]
-        public async Task<ActionResult> AuthCallback([FromQuery] string code, [FromQuery(Name = "state")] string authKey)
+        public async Task<ActionResult> AuthCallback(
+            [FromQuery(Name = "state")] string? authKey = null,
+            [FromQuery] string? code = null,
+            [FromQuery] string? error = null)
         {
-            if (string.IsNullOrWhiteSpace(code))
-                return BadRequest("Invalid code");
+            var redirect = Redirect("https://spotify.com");
 
-            await _authManager.HandleAuthCallback(code, authKey);
+            if (string.IsNullOrWhiteSpace(authKey))
+                return redirect;
 
-            return Redirect("https://spotify.com");
+            if (!string.IsNullOrWhiteSpace(error))
+            {
+                _authManager.HandleAuthCallbackError(error, authKey);
+                return redirect;
+            }
+
+            if (!string.IsNullOrWhiteSpace(code))
+                await _authManager.HandleAuthCallback(code, authKey);
+
+
+            return redirect;
         }
 
         [HttpGet("{authKey}")]
@@ -60,7 +73,6 @@ namespace SpotifyPlus.Controllers
         {
             if (string.IsNullOrWhiteSpace(refreshToken))
                 return BadRequest();
-
 
             var result = await _authManager.GetAuthDataFromRefreshToken(refreshToken);
 
