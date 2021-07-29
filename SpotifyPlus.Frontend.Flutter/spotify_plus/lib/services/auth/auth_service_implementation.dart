@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
+import 'package:injectable/injectable.dart';
 import 'package:spotify_plus/api_urls.dart';
 import 'package:spotify_plus/helpers/formatted_api_error_message.dart';
 import 'package:spotify_plus/models/auth/auth_data.dart';
@@ -12,6 +13,7 @@ import 'package:spotify_plus/services/auth/auth_service_exception.dart';
 import 'package:spotify_plus/services/auth_prefs/auth_prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+@Singleton(as: AuthService)
 class AuthServiceImplementation implements AuthService {
   final AuthPrefs _authPrefs;
   final StreamController<AuthData?> _authChangedController;
@@ -20,8 +22,7 @@ class AuthServiceImplementation implements AuthService {
 
   Future<AuthData>? _refreshFuture;
 
-  AuthServiceImplementation() :
-    _authPrefs = GetIt.instance.get<AuthPrefs>(),
+  AuthServiceImplementation(this._authPrefs) :
     _authChangedController = StreamController<AuthData?>.broadcast()
   {
     _authChangedController.onListen = () => _authChangedController.add(_currentAuth);

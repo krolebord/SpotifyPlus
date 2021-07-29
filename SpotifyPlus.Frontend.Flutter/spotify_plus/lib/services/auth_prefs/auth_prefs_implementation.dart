@@ -1,10 +1,11 @@
 import 'dart:convert';
-
+import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spotify_plus/models/auth/auth_data.dart';
 import 'package:spotify_plus/services/auth_prefs/auth_prefs.dart';
 
+@Singleton(as: AuthPrefs)
 class AuthPrefsImplementation implements AuthPrefs {
   static const String _authDataKey = "Auth_Data";
 

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 import 'package:oauth2/oauth2.dart' as oauth;
 import 'package:spotify/spotify.dart';
 import 'package:spotify_plus/api_urls.dart';
@@ -7,12 +8,14 @@ import 'package:spotify_plus/services/api_client_factory/api_client_factory.dart
 import 'package:spotify_plus/services/api_service/api_service.dart';
 import 'package:spotify_plus/services/api_service/api_service_exception.dart';
 
+@Singleton(as: ApiService)
 class ApiServiceImplementation implements ApiService {
-  final ApiClientFactory _apiClientFactory = GetIt.instance.get<ApiClientFactory>();
-
+  final ApiClientFactory _apiClientFactory;
 
   late final Future<SpotifyApi> _spotify = _apiClientFactory.getClient();
   late final Future<oauth.Client> _client = _spotify.then((value) => value.client);
+
+  ApiServiceImplementation(this._apiClientFactory);
 
   @override
   Future<Player> getCurrentlyPlaying() async {
