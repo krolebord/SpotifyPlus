@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:spotify/spotify.dart';
 import 'package:oauth2/oauth2.dart' as oauth;

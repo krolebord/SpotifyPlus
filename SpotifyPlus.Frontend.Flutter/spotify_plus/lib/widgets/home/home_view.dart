@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spotify_plus/cubit/auth/auth_cubit.dart';
-import 'package:spotify_plus/mixins/api_service_mixin.dart';
 import 'package:spotify_plus/widgets/common/signed_in_appbar.dart';
 import 'package:spotify_plus/widgets/spotify/display/currently_playing_display.dart';
 import 'package:spotify_plus/widgets/spotify/display/recommendations_display.dart';
 import 'package:spotify_plus/widgets/spotify/display/top_tracks_display.dart';
 
-class HomeView extends StatefulWidget with ApiServiceMixin {
-  HomeView({Key? key}) : super(key: key);
+class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();

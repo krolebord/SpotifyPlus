@@ -22,7 +22,7 @@ class AppRoutes {
       SignedInGuard([
         VWidget(
           path: home,
-          widget: HomeView()
+          widget: const HomeView()
         )
       ])
     ];

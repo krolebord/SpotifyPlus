@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:spotify/spotify.dart' hide Image;
-import 'package:spotify_plus/services/api_service/api_service.dart';
+import 'package:spotify_plus/helpers/get_service.dart';
+import 'package:spotify_plus/services/api_services/playback/playback_service.dart';
 import 'package:spotify_plus/widgets/common/clickable_text.dart';
 import 'package:spotify_plus/widgets/common/more_button.dart';
 import 'package:spotify_plus/widgets/spotify/track/track_dialog.dart';
@@ -65,7 +65,7 @@ class TrackWidget extends StatelessWidget {
       ),
     );
 
-    late Widget subtitle;
+    Widget subtitle;
 
     if(track.artists == null || track.artists!.length <= 1) {
       subtitle = _buildArtistLabel(track.artists?.first ?? Artist());
@@ -86,11 +86,27 @@ class TrackWidget extends StatelessWidget {
       );
     }
 
+    Widget trailing = Theme(
+      data: Theme.of(context).copyWith(
+        splashFactory: InkSplash.splashFactory,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: _addToQueue,
+            icon: const Icon(Icons.add),
+          ),
+          _buildMoreButton()
+        ],
+      ),
+    );
+
     return ListTile(
       leading: leading,
       title: title,
       subtitle: subtitle,
-      trailing: _buildMoreButton(),
+      trailing: trailing,
       dense: dense
     );
   }
@@ -129,8 +145,12 @@ class TrackWidget extends StatelessWidget {
     return launch(uri!);
   }
 
+  Future<void> _addToQueue() {
+    return getService<PlaybackService>().addTrackToQueue(track);
+  }
+
   Future<void> _tryPlay() {
-    return GetIt.instance.get<ApiService>().playTrack(track);
+    return getService<PlaybackService>().playTrack(track);
   }
 
   void _showDetails(BuildContext context) {

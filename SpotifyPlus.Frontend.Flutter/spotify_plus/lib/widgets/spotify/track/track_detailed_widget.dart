@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/spotify.dart';
-import 'package:spotify_plus/mixins/api_service_mixin.dart';
+import 'package:spotify_plus/helpers/get_service.dart';
+import 'package:spotify_plus/services/api_services/tracks/tracks_service.dart';
 import 'package:spotify_plus/widgets/common/safe_future_builder.dart';
 import 'package:spotify_plus/widgets/spotify/track/track_features_widget.dart';
 import 'package:spotify_plus/widgets/spotify/track/track_widget.dart';
 
-class TrackDetailedWidget extends StatelessWidget with ApiServiceMixin {
+class TrackDetailedWidget extends StatelessWidget {
   final Track track;
 
   const TrackDetailedWidget({
@@ -28,7 +29,7 @@ class TrackDetailedWidget extends StatelessWidget with ApiServiceMixin {
 
   Widget _buildDetails() {
     return SafeFutureBuilder<AudioFeature>(
-      futureBuilder: () => apiService.getTrackFeatures(track.id!),
+      futureBuilder: () => getService<TracksService>().getTrackFeatures(track.id!),
       dataBuilder: _buildData,
     );
   }

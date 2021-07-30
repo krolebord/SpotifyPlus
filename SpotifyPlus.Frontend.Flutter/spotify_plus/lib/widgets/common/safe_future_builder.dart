@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class SafeFutureBuilder<TData> extends StatefulWidget {
   final Future<TData> Function() futureBuilder;
@@ -60,9 +62,15 @@ class _SafeFutureBuilderState<TData> extends State<SafeFutureBuilder<TData>> {
       }
     }
     catch(error) {
-      if(!_disposed) {
-        setState(() => _error = error);
+      if(_disposed) {
+        return;
       }
+
+      if(kDebugMode) {
+        Logger().log(Level.error, error.toString());
+      }
+
+      setState(() => _error = error);
     }
   }
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:spotify/spotify.dart';
-import 'package:spotify_plus/mixins/api_service_mixin.dart';
+import 'package:spotify_plus/helpers/get_service.dart';
+import 'package:spotify_plus/services/api_services/recommendations/recommendations_service.dart';
+import 'package:spotify_plus/services/api_services/recommendations/recommendations_service_extensions/recommendations_from_player_extension.dart';
 import 'package:spotify_plus/widgets/common/spotify_widget.dart';
 import 'package:spotify_plus/widgets/spotify/track/track_widget.dart';
 
-class RecommendationsDisplay extends StatefulWidget with ApiServiceMixin {
+class RecommendationsDisplay extends StatefulWidget {
   const RecommendationsDisplay({Key? key}) : super(key: key);
 
   @override
@@ -30,7 +32,7 @@ class _RecommendationsDisplayState extends State<RecommendationsDisplay> {
   @override
   Widget build(BuildContext context) {
     return SpotifyWidget<List<Track>>(
-      futureBuilder: widget.apiService.getRecommendations,
+      futureBuilder: () => getService<RecommendationsService>().getDefault().then((data) => data.toList()),
       label: const Text('Recommendations:'),
       width: 600,
       height: 400,

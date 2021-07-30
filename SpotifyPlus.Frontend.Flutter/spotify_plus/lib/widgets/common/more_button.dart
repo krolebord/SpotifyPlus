@@ -17,6 +17,7 @@ class MoreButton extends StatelessWidget {
         tooltip: "Actions",
         padding: EdgeInsets.zero,
         icon: const Icon(Icons.more_vert),
+        enableFeedback: false,
         itemBuilder: (context) => actions,
       ),
     );
