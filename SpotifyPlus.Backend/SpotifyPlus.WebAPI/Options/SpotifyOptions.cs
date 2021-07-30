@@ -11,5 +11,7 @@
         public string RedirectUrl { get; set; } = string.Empty;
 
         public int SessionDuration { get; set; }
+
+        public bool ShowDialog { get; set; }
     }
 }

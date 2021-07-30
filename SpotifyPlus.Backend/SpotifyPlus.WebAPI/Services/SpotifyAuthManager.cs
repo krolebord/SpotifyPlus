@@ -58,7 +58,7 @@ namespace SpotifyPlus.Services
                 {"client_id", _spotifyOptions.ClientId},
                 {"scope", string.Join(' ', AuthScopes) },
                 {"redirect_uri", _spotifyOptions.RedirectUrl},
-                {"show_dialog", "true"},
+                {"show_dialog", _spotifyOptions.ShowDialog.ToString().ToLower()  },
                 {"state", authKey}
             };
 
